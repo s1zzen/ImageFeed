@@ -17,16 +17,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="ebv-AX-nZo">
-                                <rect key="frame" x="157.33333333333334" y="399.66666666666669" width="78.333333333333343" height="78"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchScreenImage" translatesAutoresizingMaskIntoConstraints="NO" id="XXK-We-Soe">
+                                <rect key="frame" x="160" y="388.66666666666669" width="73" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="73" id="Tml-qM-Cb4"/>
+                                    <constraint firstAttribute="height" constant="75" id="dAK-5P-i0L"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="ebv-AX-nZo" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="8Es-8i-6eG"/>
-                            <constraint firstItem="ebv-AX-nZo" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.2" id="fLx-rD-jwQ"/>
-                            <constraint firstItem="ebv-AX-nZo" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="mnC-Ic-yjx"/>
+                            <constraint firstItem="XXK-We-Soe" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="JA4-1G-BQS"/>
+                            <constraint firstItem="XXK-We-Soe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="wbE-hz-OnN"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -36,9 +39,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Image" width="75" height="78"/>
+        <image name="launchScreenImage" width="128" height="128"/>
         <namedColor name="YP Black">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
