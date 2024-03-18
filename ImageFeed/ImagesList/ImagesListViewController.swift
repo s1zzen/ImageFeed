@@ -1,9 +1,10 @@
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private let date = Date()
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -13,7 +14,6 @@ class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.rowHeight = 200
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }
@@ -38,19 +38,16 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let likeImage: UIImage = {
-            if indexPath.row % 2 == 0 {
-                print(1)
-                return UIImage(named: "like_button_off") ?? UIImage()
-            } else {
-                print(2)
-                return UIImage(named: "like_button_on") ?? UIImage()
-            }
-        }()
+        let likeImage = indexPath.row % 2 == 0 ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
         
-        cell.dateLabel?.text = dateFormatter.string(from: Date())
+        cell.dateLabel?.text = dateFormatter.string(from: date)
         cell.likeButton?.setImage(likeImage, for: .normal)
         cell.contentImage?.image = UIImage(named: photosName[indexPath.row]) ?? UIImage()
+        let gradientMaskLayer = CAGradientLayer()
+        gradientMaskLayer.frame = cell.gradientView?.bounds ?? CGRectZero
+        gradientMaskLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradientMaskLayer.locations = [0.1, 0.9]
+        cell.gradientView?.layer.mask = gradientMaskLayer
         
     }
 }
@@ -59,9 +56,8 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return CGFloat(200)
-        }
+        guard let image = UIImage(named: photosName[indexPath.row]) else { return .zero }
+        
         let cellWidth = tableView.contentSize.width - 32
         let cellHeight = cellWidth / image.size.width * image.size.height
         return cellHeight + 8
