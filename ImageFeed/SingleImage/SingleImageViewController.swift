@@ -67,11 +67,9 @@ extension SingleImageViewController: UIScrollViewDelegate {
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         let contentSize = scrollView.contentSize
         let visibleRectSize = scrollView.bounds.size
-        let x = (contentSize.width - visibleRectSize.width) / 2
-        let y = (contentSize.height - visibleRectSize.height) / 2
-        scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
-    }
-    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        false
+        let offsetX = max((contentSize.width - visibleRectSize.width) * 0.5, 0)
+        let offsetY = max((contentSize.height - visibleRectSize.height) * 0.5, 0)
+        let newContentOffset = CGPoint(x: offsetX, y: offsetY)
+        scrollView.setContentOffset(newContentOffset, animated: false)
     }
 }
