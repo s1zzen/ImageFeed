@@ -36,8 +36,16 @@ final class ProfileViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "logout_button") ?? UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
         button.tintColor = UIColor(red: 245/255, green: 107/255, blue: 108/255, alpha: 1)
+        // для дебага
+        button.addTarget(self, action: #selector(handleLogoutButtonTap), for: .touchUpInside)
         return button
     }()
+    
+    @objc func handleLogoutButtonTap() {
+        OAuth2TokenStorage.shared.logout()
+        
+        print("Logout button tapped!")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
