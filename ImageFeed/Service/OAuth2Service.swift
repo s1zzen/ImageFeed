@@ -26,7 +26,9 @@ final class OAuth2Service {
             
         ]
         
-        guard let urlRequest = urlComponents?.url else {return nil }
+        guard let urlRequest = urlComponents?.url
+        else {assertionFailure("Url Error")
+            return nil }
         print(urlRequest.absoluteString)
         var request = URLRequest(url: urlRequest)
         request.httpMethod = "POST"
@@ -41,6 +43,7 @@ final class OAuth2Service {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let response = try decoder.decode(OAuth2TokenResponseBody.self, from: data)
                     OAuth2TokenStorage.shared.token = response.accessToken
                     handler(.success(response.accessToken))

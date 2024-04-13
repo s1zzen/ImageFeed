@@ -13,5 +13,11 @@ enum Constants {
     static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
     static let accessScope: String = "public+read_user+write_likes"
     static let grandType: String = "authorization_code"
-    static let defaultBaseURL = URL(string: "https://api.unsplash.com")!
+    static let defaultBaseURL: URL = {
+        if let url = URL(string: "https://api.unsplash.com") {
+            return url
+        } else {
+            fatalError("Invalid defaultBaseURL: https://api.unsplash.com")
+        }
+    }()
 }

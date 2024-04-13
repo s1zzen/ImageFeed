@@ -33,7 +33,7 @@ final class AuthViewController: UIViewController {
     }
     
     private func configureBackButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backwar")
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backward")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backward")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")

@@ -32,9 +32,15 @@ final class SplashViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     private func switchToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController") as! UITabBarController
+        guard let window = UIApplication.shared.windows.first 
+        else {
+            assertionFailure("Invalid Window Configuration")
+            return
+        }
+        guard let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+            .instantiateViewController(withIdentifier: "TabBarViewController") as? UITabBarController 
+        else { assertionFailure("Invalid TabBar Configuration")
+            return }
         tabBarController.selectedIndex = 1
         window.rootViewController = tabBarController
     }
