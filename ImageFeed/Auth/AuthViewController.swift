@@ -12,7 +12,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    private var imageView = UIImageView(image: UIImage(named: "Logo_of_Unsplash"))
+    private var imageView = UIImageView(image: UIImage(named: "logo_of_unsplash"))
     private var loginButton: UIButton = {
         let button = UIButton()
         button.setTitle("Войти", for: .normal)
@@ -31,11 +31,10 @@ final class AuthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureBackButton()
-        configureView()
+        setupView()
     }
     
-    private func configureView() {
+    private func setupView() {
         loginButton.addTarget(self, action: #selector(Self.didTapLoginButton), for: .touchUpInside)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         loginButton.translatesAutoresizingMaskIntoConstraints = false
@@ -64,23 +63,6 @@ final class AuthViewController: UIViewController {
         webViewController.delegate = self
         webViewController.modalPresentationStyle = .overFullScreen
         present(webViewController, animated: true, completion: nil)
-    }
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == WebSegueId {
-//            guard
-//                let webViewViewController = segue.destination as? WebViewViewController
-//            else { fatalError("Failed to prepare for \(WebSegueId)") }
-//            webViewViewController.delegate = self
-//        } else {
-//            super.prepare(for: segue, sender: sender)
-//        }
-//    }
-    
-    private func configureBackButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backward")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backward")
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
     
     private func fetchOAuthToken(_ code: String) {

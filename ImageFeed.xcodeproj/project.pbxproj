@@ -135,13 +135,13 @@
 		5B69F5742B94BCA6003C8417 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				5B69F5752B94BCA6003C8417 /* AppDelegate.swift */,
+				5B69F5772B94BCA6003C8417 /* SceneDelegate.swift */,
 				5B1B1F3F2BECF239003B316A /* TabBarController */,
 				5B1B1F3C2BECCC42003B316A /* ProgressHUD */,
 				5B9038412BC9B32700271B39 /* SplashViewController */,
 				5B9038382BC9771200271B39 /* Service */,
 				5B50F9BF2BC6D78A0015DDE5 /* Auth */,
-				5B69F5752B94BCA6003C8417 /* AppDelegate.swift */,
-				5B69F5772B94BCA6003C8417 /* SceneDelegate.swift */,
 				5B351B902BB9AF950097177E /* SingleImage */,
 				5B351B6B2BB890250097177E /* Profile */,
 				5B69F5E12B9F53EE003C8417 /* ImagesList */,

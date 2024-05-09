@@ -34,7 +34,7 @@ final class SplashViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
-    private func configureView() {
+    private func setupView() {
         view.backgroundColor = .ypBlack
         let imageView = UIImageView(image: UIImage(named: "LaunchScreen"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
