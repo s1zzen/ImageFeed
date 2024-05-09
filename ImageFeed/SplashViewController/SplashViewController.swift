@@ -20,11 +20,9 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         let token = oauth2TokenStorage.token
-        guard let token = token else {
-            showAuthenticationScreen()
-            return
-        }
-        fetchProfile(token)
+        if let token = token { fetchProfile(token) }
+        else { showAuthenticationScreen() }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,7 +34,7 @@ final class SplashViewController: UIViewController {
     
     private func setupView() {
         view.backgroundColor = .ypBlack
-        let imageView = UIImageView(image: UIImage(named: "LaunchScreen"))
+        let imageView = UIImageView(image: UIImage(named: "launchScreenImage"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
         NSLayoutConstraint.activate([
@@ -46,10 +44,10 @@ final class SplashViewController: UIViewController {
     }
     
     private func showAuthenticationScreen() {
-        let authVC = AuthViewController()
-        authVC.delegate = self
-        authVC.modalPresentationStyle = .overFullScreen
-        present(authVC, animated: true, completion: nil)
+        let authViewController = AuthViewController()
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .overFullScreen
+        present(authViewController, animated: true, completion: nil)
     }
     
     private func switchToTabBarController() {
@@ -69,19 +67,6 @@ final class SplashViewController: UIViewController {
 }
 
 extension SplashViewController {
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-//            guard
-//                let navigationController = segue.destination as? UINavigationController,
-//                let viewController = navigationController.viewControllers[0] as? AuthViewController
-//            else { assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
-//                return }
-//            viewController.delegate = self
-//        } else {
-//            super.prepare(for: segue, sender: sender)
-//        }
-//    }
-    
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
         profileService.fetchProfile(token, completion: ({ [weak self] result in

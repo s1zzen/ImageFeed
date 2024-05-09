@@ -23,6 +23,8 @@ final class WebViewViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "login_back_button"), for: .normal)
         
+        button.addTarget(self, action: #selector(Self.didTapBackButton), for: .touchUpInside)
+        
         return button
     }()
     
@@ -42,7 +44,7 @@ final class WebViewViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateProgress()
             })
-        
+        setupWebView()
         loadAuthView()
         webView.navigationDelegate = self
     }
@@ -81,7 +83,6 @@ final class WebViewViewController: UIViewController {
     }
     
     private func setupWebView() {
-        backButton.addTarget(self, action: #selector(Self.didTapBackButton), for: .touchUpInside)
         webView.backgroundColor = .ypWhite
         progressView.progressTintColor = .ypBlack
         
@@ -129,6 +130,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
+            
             return
         }
         
@@ -165,3 +167,4 @@ extension WebViewViewController: WKNavigationDelegate {
         }
     }
 }
+

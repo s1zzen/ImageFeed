@@ -13,16 +13,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 
 final class AuthViewController: UIViewController {
     private var imageView = UIImageView(image: UIImage(named: "logo_of_unsplash"))
-    private var loginButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Войти", for: .normal)
-        button.setTitleColor(.ypBlack, for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
-        button.backgroundColor = .ypWhite
-        button.layer.cornerRadius = 16
-        
-        return button
-    }()
+    private var loginButton: UIButton = UIButton() // Объявляем здесь
     
     weak var delegate: AuthViewControllerDelegate?
     
@@ -35,7 +26,13 @@ final class AuthViewController: UIViewController {
     }
     
     private func setupView() {
-        loginButton.addTarget(self, action: #selector(Self.didTapLoginButton), for: .touchUpInside)
+        loginButton.setTitle("Войти", for: .normal)
+        loginButton.setTitleColor(.ypBlack, for: .normal)
+        loginButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        loginButton.backgroundColor = .ypWhite
+        loginButton.layer.cornerRadius = 16
+        loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -78,9 +75,8 @@ final class AuthViewController: UIViewController {
             }
         }
     }
-
-    
 }
+
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
