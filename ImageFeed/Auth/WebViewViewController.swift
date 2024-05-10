@@ -41,7 +41,9 @@ final class WebViewViewController: UIViewController {
             \.estimatedProgress,
              options: [.new],
             changeHandler: { [weak self] _, _ in
-                guard let self = self else { return }
+                guard let self = self else { 
+                    assertionFailure("[WebViewController viewdidLoad]: self undefied - webView observe changeHandler")
+                    return }
                 self.updateProgress()
             })
         setupWebView()
@@ -118,7 +120,7 @@ final class WebViewViewController: UIViewController {
     
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-            assertionFailure("Failed to prepare for \(WebViewConstants.unsplashAuthorizeURLString)")
+            assertionFailure("[WebViewController loadAuthView]: Failed to prepare - for: \(WebViewConstants.unsplashAuthorizeURLString)")
             return
         }
         
@@ -130,7 +132,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
-            
+            assertionFailure("[WebViewController loadAuthView]: UrlComponents Failed")
             return
         }
         

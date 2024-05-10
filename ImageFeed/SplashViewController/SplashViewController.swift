@@ -53,14 +53,15 @@ final class SplashViewController: UIViewController {
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first 
         else {
-            assertionFailure("Invalid Window Configuration")
+            assertionFailure("[SplashViewController switchToTabBarController]: Invalid Window Configuration")
             return
         }
         guard let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController") as? UITabBarController 
-        else { assertionFailure("Invalid TabBar Configuration")
+        else { 
+            assertionFailure("[SplashViewController switchToTabBarController]: Invalid TabBar Configuration")
             return }
-        tabBarController.selectedIndex = 1
+        tabBarController.selectedIndex = 0
         window.rootViewController = tabBarController
     }
     
@@ -71,14 +72,17 @@ extension SplashViewController {
         UIBlockingProgressHUD.show()
         profileService.fetchProfile(token, completion: ({ [weak self] result in
             UIBlockingProgressHUD.dismiss()
-            guard let self = self else { return }
+            guard let self = self else { 
+                assertionFailure("[SplashViewController fetchProfile]: self undefined")
+                return
+            }
             
             switch result {
             case .success(let profile):
                 self.fetchProfileImage(profile.username)
                 self.switchToTabBarController()
             case .failure(let error):
-                print(error)
+                assertionFailure("[SplashViewController fetchProfile]: profile fetching Error - Error: \(error)")
             }
         }))
     }
@@ -88,7 +92,7 @@ extension SplashViewController {
             switch result {
             case .success(_): break
             case .failure(let error):
-                print(error)
+                assertionFailure("[SplashViewController fetchProfileImage]: profile image fetching Error - Error: \(error)")
             }
         })
     }
@@ -99,7 +103,10 @@ extension SplashViewController: AuthViewControllerDelegate {
         dismiss(animated: true) { [weak self] in
             guard let self = self,
             let token = oauth2TokenStorage.token
-            else { return }
+            else { 
+                assertionFailure("[SplashViewController authViewControllerDelegate Extension]: self or token undefined")
+                return
+            }
             fetchProfile(token)
         }
     }

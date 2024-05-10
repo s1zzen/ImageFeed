@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftKeychainWrapper
 
 enum ProfileImageServiceError: Error {
     case invalidRequest
@@ -33,19 +32,20 @@ final class ProfileImageService {
     func makeProfileImageRequest(username: String) -> URLRequest? {
         guard
             let token = oauth2TokenStorage.token else {
-            assertionFailure("Token - nil")
+            
+            assertionFailure("[ProfileImageService makeProfileImageRequest]: token is nil")
             return nil
         }
         
         guard var components = URLComponents(string: "\(Constants.defaultBaseURL)") else {
-            assertionFailure("Failed to create URL")
+            assertionFailure("[ProfileImageService makeProfileImageRequest]: Failed to create URL")
             return nil
         }
         
         components.path = "/users/\(username)"
 
         guard let url = components.url else {
-            assertionFailure("Failed to create URL")
+            assertionFailure("[ProfileImageService makeProfileImageRequest]: Failed to create URL")
             return nil
         }
         
@@ -58,6 +58,7 @@ final class ProfileImageService {
         assert(Thread.isMainThread)
         
         guard lastUsername != username else {
+            assertionFailure("[ProfileImageService fetchProfileImage]: username dupe")
             completion(.failure(ProfileImageServiceError.invalidRequest))
             return
         }
@@ -66,6 +67,7 @@ final class ProfileImageService {
         lastUsername = username
         
         guard let request = makeProfileImageRequest(username: username) else {
+            assertionFailure("[ProfileImageService fetchProfileImage]: invalid request")
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
@@ -73,6 +75,7 @@ final class ProfileImageService {
         let task = urlSession.objectTask(for: request, completion: { [weak self] (result: Result<UserResult, Error>) in
             
             guard let self = self else {
+                assertionFailure("[ProfileImageService fetchProfileImage]:  self undefined")
                 return
             }
             
@@ -81,7 +84,7 @@ final class ProfileImageService {
                 self.avatarURL = response.profile_image["large"]
                 
                 guard let avatarURL = self.avatarURL else {
-                    assertionFailure("Failed to create profile image")
+                    assertionFailure("[ProfileImageService fetchProfileImage]: Failed to create profile image")
                     return
                 }
                 
@@ -93,7 +96,7 @@ final class ProfileImageService {
                 
                 completion(.success(avatarURL))
             case .failure(let error):
-                print("[ProfileImageService.fetchProfileImage] failure - \(error)")
+                assertionFailure("[ProfileImageService fetchProfileImage]: urlSession Error - Error: \(error)")
                 completion(.failure(error))
             }
 

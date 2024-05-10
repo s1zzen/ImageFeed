@@ -73,6 +73,7 @@ final class ProfileViewController: UIViewController {
         setupConstraints()
         
         guard let profile = profileService.profile else {
+            assertionFailure("[ProfileViewController viewDidLoad]: Failed to create profile")
             return
         }
         

@@ -13,7 +13,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 
 final class AuthViewController: UIViewController {
     private var imageView = UIImageView(image: UIImage(named: "logo_of_unsplash"))
-    private var loginButton: UIButton = UIButton() // Объявляем здесь
+    private var loginButton: UIButton = UIButton()
     
     weak var delegate: AuthViewControllerDelegate?
     
@@ -64,14 +64,23 @@ final class AuthViewController: UIViewController {
     
     private func fetchOAuthToken(_ code: String) {
         oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
-            guard let self = self else { return }
+            guard let self = self else {
+                assertionFailure("[AuthViewController fetchOAuthToken]: self undefined")
+                return
+            }
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
                 delegate?.authViewController(self)
             case .failure(let err):
-                print(err)
-                break
+                let alert = UIAlertController(
+                    title: "Error",
+                    message: "Network Error, check your connection.",
+                    preferredStyle: .alert)
+                let action = UIAlertAction(title: "retry", style: .default)
+                alert.addAction(action)
+                
+                assertionFailure("[AuthViewController fetchOAuthToken]: token fetching error - Error: \(err)")
             }
         }
     }

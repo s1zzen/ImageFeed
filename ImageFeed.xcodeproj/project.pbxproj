@@ -93,8 +93,6 @@
 			isa = PBXGroup;
 			children = (
 				5B351B6C2BB890250097177E /* ProfileViewController.swift */,
-				5B1B1F2F2BECCB71003B316A /* ProfileService.swift */,
-				5B1B1F312BECCBCB003B316A /* ProfileImageService.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -167,6 +165,8 @@
 		5B9038382BC9771200271B39 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				5B1B1F2F2BECCB71003B316A /* ProfileService.swift */,
+				5B1B1F312BECCBCB003B316A /* ProfileImageService.swift */,
 				5B9038392BC9777000271B39 /* OAuth2Service.swift */,
 				5B90383B2BC993ED00271B39 /* OAuth2TokenResponseBody.swift */,
 				5B90383D2BC994A300271B39 /* OAuth2TokenStorage.swift */,
