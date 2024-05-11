@@ -37,13 +37,13 @@ final class ProfileService {
     
     func makeProfileInfoRequest(token: String) -> URLRequest? {
         guard var components = URLComponents(string: "\(Constants.defaultBaseURL)") else {
-            assertionFailure("[ProfileService makeProfileInfoRequest]: UrlComponents Failed")
+            print("[ProfileService makeProfileInfoRequest]: UrlComponents Failed")
             return nil
         }
         components.path = "/me"
         
         guard let url = components.url else {
-            assertionFailure("[ProfileService makeProfileInfoRequest]: Failed to create URL")
+            print("[ProfileService makeProfileInfoRequest]: Failed to create URL")
             return nil
         }
         
@@ -56,7 +56,7 @@ final class ProfileService {
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread, "[ProfileService fetchProfile]: Thread is not Main")
         guard lastToken != token else {
-            assertionFailure("[ProfileService fetchProfile]: token dupe")
+            print("[ProfileService fetchProfile]: token dupe")
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
@@ -65,7 +65,7 @@ final class ProfileService {
         lastToken = token
         
         guard let request = makeProfileInfoRequest(token: token) else {
-            assertionFailure("[ProfileService fetchProfile]: request error")
+            print("[ProfileService fetchProfile]: request error")
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
@@ -80,13 +80,13 @@ final class ProfileService {
                     bio: profile.bio ?? "")
                 
                 guard let profile = self?.profile else {
-                    assertionFailure("[ProfileService fetchProfile]: Failed to create profile")
+                    print("[ProfileService fetchProfile]: Failed to create profile")
                     return
                 }
                 completion(.success(profile))
                 
             case .failure(let error):
-                assertionFailure("[ProfileService fetchProfile]: session error - Error: \(error)")
+                print("[ProfileService fetchProfile]: session error - Error: \(error)")
                 completion(.failure(error))
             }
             

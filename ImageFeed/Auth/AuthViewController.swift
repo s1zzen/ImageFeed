@@ -9,6 +9,7 @@ import UIKit
 
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController)
+    func showErrorAlert(_ vc: AuthViewController)
 }
 
 final class AuthViewController: UIViewController {
@@ -65,22 +66,15 @@ final class AuthViewController: UIViewController {
     private func fetchOAuthToken(_ code: String) {
         oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
             guard let self = self else {
-                assertionFailure("[AuthViewController fetchOAuthToken]: self undefined")
+                print("[AuthViewController fetchOAuthToken]: self undefined")
                 return
             }
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
                 delegate?.authViewController(self)
-            case .failure(let err):
-                let alert = UIAlertController(
-                    title: "Error",
-                    message: "Network Error, check your connection.",
-                    preferredStyle: .alert)
-                let action = UIAlertAction(title: "retry", style: .default)
-                alert.addAction(action)
-                
-                assertionFailure("[AuthViewController fetchOAuthToken]: token fetching error - Error: \(err)")
+            case .failure(_):
+                delegate?.showErrorAlert(self)
             }
         }
     }

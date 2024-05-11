@@ -33,19 +33,19 @@ final class ProfileImageService {
         guard
             let token = oauth2TokenStorage.token else {
             
-            assertionFailure("[ProfileImageService makeProfileImageRequest]: token is nil")
+            print("[ProfileImageService makeProfileImageRequest]: token is nil")
             return nil
         }
         
         guard var components = URLComponents(string: "\(Constants.defaultBaseURL)") else {
-            assertionFailure("[ProfileImageService makeProfileImageRequest]: Failed to create URL")
+            print("[ProfileImageService makeProfileImageRequest]: Failed to create URL")
             return nil
         }
         
         components.path = "/users/\(username)"
 
         guard let url = components.url else {
-            assertionFailure("[ProfileImageService makeProfileImageRequest]: Failed to create URL")
+            print("[ProfileImageService makeProfileImageRequest]: Failed to create URL")
             return nil
         }
         
@@ -58,7 +58,7 @@ final class ProfileImageService {
         assert(Thread.isMainThread)
         
         guard lastUsername != username else {
-            assertionFailure("[ProfileImageService fetchProfileImage]: username dupe")
+            print("[ProfileImageService fetchProfileImage]: username dupe")
             completion(.failure(ProfileImageServiceError.invalidRequest))
             return
         }
@@ -67,7 +67,7 @@ final class ProfileImageService {
         lastUsername = username
         
         guard let request = makeProfileImageRequest(username: username) else {
-            assertionFailure("[ProfileImageService fetchProfileImage]: invalid request")
+            print("[ProfileImageService fetchProfileImage]: invalid request")
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
@@ -75,7 +75,7 @@ final class ProfileImageService {
         let task = urlSession.objectTask(for: request, completion: { [weak self] (result: Result<UserResult, Error>) in
             
             guard let self = self else {
-                assertionFailure("[ProfileImageService fetchProfileImage]:  self undefined")
+                print("[ProfileImageService fetchProfileImage]:  self undefined")
                 return
             }
             
@@ -84,7 +84,7 @@ final class ProfileImageService {
                 self.avatarURL = response.profile_image["large"]
                 
                 guard let avatarURL = self.avatarURL else {
-                    assertionFailure("[ProfileImageService fetchProfileImage]: Failed to create profile image")
+                    print("[ProfileImageService fetchProfileImage]: Failed to create profile image")
                     return
                 }
                 
@@ -96,7 +96,7 @@ final class ProfileImageService {
                 
                 completion(.success(avatarURL))
             case .failure(let error):
-                assertionFailure("[ProfileImageService fetchProfileImage]: urlSession Error - Error: \(error)")
+                print("[ProfileImageService fetchProfileImage]: urlSession Error - Error: \(error)")
                 completion(.failure(error))
             }
 

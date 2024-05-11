@@ -18,11 +18,11 @@ final class OAuth2TokenStorage {
         }
         set {
             guard let newValue = newValue else { 
-                assertionFailure("[OAuth2TokenStorage]: newValue Error")
+                print("[OAuth2TokenStorage]: newValue Error")
                 return }
             let isSuccess = storage.set(newValue, forKey: tokenKey)
             guard isSuccess else {
-                assertionFailure("[OAuth2TokenStorage]: Save Error - SwiftKeychainWrapper Error")
+                print("[OAuth2TokenStorage]: Save Error - SwiftKeychainWrapper Error")
                 return
             }
         }

@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 final class SplashViewController: UIViewController {
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     
@@ -53,13 +54,13 @@ final class SplashViewController: UIViewController {
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first 
         else {
-            assertionFailure("[SplashViewController switchToTabBarController]: Invalid Window Configuration")
+            print("[SplashViewController switchToTabBarController]: Invalid Window Configuration")
             return
         }
         guard let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController") as? UITabBarController 
         else { 
-            assertionFailure("[SplashViewController switchToTabBarController]: Invalid TabBar Configuration")
+            print("[SplashViewController switchToTabBarController]: Invalid TabBar Configuration")
             return }
         tabBarController.selectedIndex = 0
         window.rootViewController = tabBarController
@@ -73,7 +74,7 @@ extension SplashViewController {
         profileService.fetchProfile(token, completion: ({ [weak self] result in
             UIBlockingProgressHUD.dismiss()
             guard let self = self else { 
-                assertionFailure("[SplashViewController fetchProfile]: self undefined")
+                print("[SplashViewController fetchProfile]: self undefined")
                 return
             }
             
@@ -82,20 +83,43 @@ extension SplashViewController {
                 self.fetchProfileImage(profile.username)
                 self.switchToTabBarController()
             case .failure(let error):
-                assertionFailure("[SplashViewController fetchProfile]: profile fetching Error - Error: \(error)")
+                let errorAlert = getErrorAlert()
+                showErrorAlert(errorAlert)
+                print("[SplashViewController fetchProfile]: profile fetching Error - Error: \(error)")
             }
         }))
     }
     
     private func fetchProfileImage(_ username: String) {
-        profileImage.fetchProfileImage(username: username, { result in
+        profileImage.fetchProfileImage(username: username, {[weak self] result in
             switch result {
             case .success(_): break
             case .failure(let error):
-                assertionFailure("[SplashViewController fetchProfileImage]: profile image fetching Error - Error: \(error)")
+                guard let self = self else { return }
+                let errorAlert = getErrorAlert()
+                showErrorAlert(errorAlert)
+                print("[SplashViewController fetchProfileImage]: profile image fetching Error - Error: \(error)")
             }
         })
     }
+    
+    func showErrorAlert(_ alert: UIAlertController) {
+        present(alert, animated: true)
+    }
+    
+    private func getErrorAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "Что-то пошло не так",
+                                      message: "Не удалось войти в систему",
+                                      preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "Ок", style: .default) { [weak self] UIAlertAction in
+            guard let self = self else { return }
+            showAuthenticationScreen()
+        }
+        alert.addAction(alertAction)
+        
+        return alert
+    }
+    
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
@@ -104,10 +128,18 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self,
             let token = oauth2TokenStorage.token
             else { 
-                assertionFailure("[SplashViewController authViewControllerDelegate Extension]: self or token undefined")
+                print("[SplashViewController authViewControllerDelegate Extension]: self or token undefined")
                 return
             }
             fetchProfile(token)
+        }
+    }
+    
+    func showErrorAlert(_ vc: AuthViewController) {
+        dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            let errorAlert = getErrorAlert()
+            showErrorAlert(errorAlert)
         }
     }
     

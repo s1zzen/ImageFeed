@@ -34,7 +34,7 @@ final class OAuth2Service {
         
         guard let urlRequest = urlComponents?.url
         else {
-            assertionFailure("[makeRequest]: url Error")
+            print("[makeRequest]: url Error")
             return nil }
         var request = URLRequest(url: urlRequest)
         request.httpMethod = "POST"
@@ -46,7 +46,7 @@ final class OAuth2Service {
         assert(Thread.isMainThread)
         
         guard lastCode != code else {
-            assertionFailure("[fetchOAuthToken]: code dupe Error")
+            print("[fetchOAuthToken]: code dupe Error")
             handler(.failure(OAuthErrors.codeDupe))
             return
         }
@@ -56,7 +56,7 @@ final class OAuth2Service {
         lastCode = code
         
         guard let request = makeRequest(code: code) else {
-            assertionFailure("[fetchOAuthToken]: makeRequest Error")
+            print("[fetchOAuthToken]: makeRequest Error")
             handler(.failure(OAuthErrors.invalidRequest))
             return
         }
@@ -71,11 +71,11 @@ final class OAuth2Service {
                     OAuth2TokenStorage.shared.token = response.accessToken
                     handler(.success(response.accessToken))
                 } catch {
-                    assertionFailure("[fetchOAuthToken task]: Decode Error - Error: \(error)")
+                    print("[fetchOAuthToken task]: Decode Error - Error: \(error)")
                     handler(.failure(error))
                 }
             case .failure(let er):
-                assertionFailure("[fetchOAuthToken task]: URLSession Error - Error: \(er)")
+                print("[fetchOAuthToken task]: URLSession Error - Error: \(er)")
                 handler(.failure(er))
             }
             

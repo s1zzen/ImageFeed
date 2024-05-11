@@ -29,14 +29,14 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data)) // 3
                 } else {
-                    assertionFailure("[URLSession data]: network Error - \(statusCode)")
+                    print("[URLSession data]: network Error - \(statusCode)")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode))) // 4
                 }
             } else if let error = error {
-                assertionFailure("[URLSession data]: request Error - \(error)")
+                print("[URLSession data]: request Error - \(error)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error))) // 5
             } else {
-                assertionFailure("[URLSession data]: urlSession undefined Error")
+                print("[URLSession data]: urlSession undefined Error")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError)) // 6
             }
         })
@@ -58,12 +58,12 @@ extension URLSession {
                     let response = try decoder.decode(T.self, from: data)
                     completion(.success(response))
                 } catch {
-                    assertionFailure("[URLSession objectTask]: Decode Error - \(error.localizedDescription), Data: \(String(data: data, encoding: .utf8) ?? "")")
+                    print("[URLSession objectTask]: Decode Error - \(error.localizedDescription), Data: \(String(data: data, encoding: .utf8) ?? "")")
                     
                     completion(.failure(error))
                 }
             case .failure(let error):
-                assertionFailure("[URLSession objectTask]: urlSession Error - \(error.localizedDescription)")
+                print("[URLSession objectTask]: urlSession Error - \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
