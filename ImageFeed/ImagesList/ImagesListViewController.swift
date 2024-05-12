@@ -8,15 +8,14 @@ final class ImagesListViewController: UIViewController {
         return tableView
     }()
     
-//    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private let date = Date()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let imagesListService = ImagesListService.shared
     private var photos: [Photo] = []
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.locale = Locale(identifier: "ru_RUS")
         return formatter
     }()
     
@@ -61,23 +60,6 @@ final class ImagesListViewController: UIViewController {
             name: ImagesListService.didChangeNotification,
             object: nil)
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == showSingleImageSegueIdentifier { // 1
-//            guard
-//                let viewController = segue.destination as? SingleImageViewController, // 2
-//                let indexPath = sender as? IndexPath // 3
-//            else {
-//                assertionFailure("Invalid segue destination") // 4
-//                return
-//            }
-//            
-//            let image = UIImage(named: photosName[indexPath.row]) // 5
-//            viewController.image = image // 6
-//        } else {
-//            super.prepare(for: segue, sender: sender) // 7
-//        }
-//    }
     
     private func configureTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -144,22 +126,6 @@ extension ImagesListViewController: UITableViewDataSource {
     }
 
 }
-
-//extension ImagesListViewController {
-//    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-//        let likeImage = indexPath.row % 2 == 0 ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
-//        
-//        cell.dateLabel?.text = dateFormatter.string(from: date)
-//        cell.likeButton?.setImage(likeImage, for: .normal)
-//        cell.contentImage?.image = UIImage(named: photosName[indexPath.row]) ?? UIImage()
-//        let gradientMaskLayer = CAGradientLayer()
-//        gradientMaskLayer.frame = cell.gradientView?.bounds ?? CGRectZero
-//        gradientMaskLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-//        gradientMaskLayer.locations = [0.1, 0.9]
-//        cell.gradientView?.layer.mask = gradientMaskLayer
-//        
-//    }
-//}
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -36,7 +36,7 @@ extension ImagesListCell {
     }
     
     func setIsLiked(isLiked: Bool) {
-        let likeImage = isLiked ? UIImage(named: "FavoritesActive") : UIImage(named: "FavoritesNoActive")
+        let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
         likeButton.imageView?.image = likeImage
     }
 }

@@ -59,7 +59,7 @@ final class ImagesListService {
     //    MARK: - Private functions
     private func makeImageListRequest(page: Int) -> URLRequest? {
         guard var components = URLComponents(string: "\(Constants.defaultBaseURL)") else {
-            print("Failed to create URL")
+            print("[ImageListService makeImageListRequest]: Failed to create URL")
             return nil
         }
         components.path = "/photos"
@@ -68,12 +68,12 @@ final class ImagesListService {
         ]
         
         guard let url = components.url else {
-            print("Failed to create URL")
+            print("[ImageListService makeImageListRequest]: Failed to create URL")
             return nil
         }
         
         guard let token = oAuthToken.token else {
-            print("Failed to get token from storage")
+            print("[ImageListService makeImageListRequest]: Failed to get token from storage")
             return nil
         }
         
@@ -85,19 +85,19 @@ final class ImagesListService {
     
     private func makeLikeRequest(photoId: String, isLike: Bool) -> URLRequest? {
         guard var components = URLComponents(string: "\(Constants.defaultBaseURL)") else {
-            print("Failed to create URL")
+            print("[ImageListService makeLikeRequest]: Failed to create URL")
             return nil
         }
         components.path = "/photos/\(photoId)/like"
         
         guard let url = components.url else {
-            print("Failed to create URL")
+            print("[ImageListService makeLikeRequest]: Failed to create URL")
             return nil
         }
         
         var request = URLRequest(url: url)
         guard let token = oAuthToken.token else {
-            print("Failed to get token from storage")
+            print("[ImageListService makeImageListRequest]: Failed to get token from storage")
             return nil
         }
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -109,13 +109,13 @@ final class ImagesListService {
     func fetchPhotosNextPage() {
         
         guard task == nil else {
-            print("\(ImageListServiceError.taskNil)")
+            print("[ImageListService fetchPhotosNextPage]: ImageListServiceError - Error: \(ImageListServiceError.taskNil)")
             return
         }
         
         let nextPageNumber = (lastLoadedPage ?? 0) + 1
         guard let request = makeImageListRequest(page: nextPageNumber) else {
-            print("\(ImageListServiceError.invalidRequest)")
+            print("[ImageListService fetchPhotosNextPage]: makeImageListRequest - Error: \(ImageListServiceError.invalidRequest)")
             return
         }
         
@@ -151,7 +151,7 @@ final class ImagesListService {
                         userInfo: ["Photo": self.photos])
                 }
             case .failure(let error):
-                print("[ImagesListService.fetchPhotosNextPage] failure - \(error)")
+                print("[ImagesListService fetchPhotosNextPage] failure - \(error)")
             }
             self.task = nil
         })
@@ -187,7 +187,7 @@ final class ImagesListService {
                     completion(.success(Void()))
                 }
             case .failure(let error):
-                print("[ImagesListService.changeLike] failure - \(error)")
+                print("[ImagesListService changeLike] failure - \(error)")
                 completion(.failure(error))
             }
         })

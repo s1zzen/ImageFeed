@@ -30,13 +30,13 @@ final class SingleImageViewController: UIViewController {
     
     private var shareButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "sharing_button"), for: .normal)
+        button.setImage(UIImage(named: "share_button"), for: .normal)
         return button
     }()
     
     private var backButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "nav_back_button"), for: .normal)
+        button.setImage(UIImage(named: "backward"), for: .normal)
         return button
     }()
     

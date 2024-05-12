@@ -5,7 +5,9 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let profileImage = ProfileImageService.shared
-    
+    private let profileLogoutService = ProfileLogoutService.shared
+    private let gradientAnimation = GradientAnimation.shared
+
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private let profileImageView: UIImageView = {
@@ -47,9 +49,26 @@ final class ProfileViewController: UIViewController {
     }()
     
     @objc func handleLogoutButtonTap() {
-        OAuth2TokenStorage.shared.logout()
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Вы уверенны что хотите выйти?",
+            preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.profileLogoutService.logout()
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid window configuration")
+                return
+            }
+            let splashVC = SplashViewController()
+            window.rootViewController = splashVC
+        }
+        let noAction = UIAlertAction(title: "Нет", style: .default)
         
-        print("Logout button tapped!")
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        
+        present(alert, animated: true)
     }
     
     override init(nibName: String?, bundle: Bundle?) {
@@ -140,6 +159,11 @@ final class ProfileViewController: UIViewController {
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
             logoutButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor)
         ])
+        
+        gradientAnimation.addGradient(view: profileImageView, width: 70, height: 70, cornerRadius: 35)
+        gradientAnimation.addGradient(view: nameLabel, width: nameLabel.intrinsicContentSize.width, height: nameLabel.intrinsicContentSize.height, cornerRadius: 13)
+        gradientAnimation.addGradient(view: loginLabel, width: loginLabel.intrinsicContentSize.width, height: loginLabel.intrinsicContentSize.height, cornerRadius: 8)
+        gradientAnimation.addGradient(view: descriptionLabel, width: descriptionLabel.intrinsicContentSize.width, height: descriptionLabel.intrinsicContentSize.height, cornerRadius: 8)
     }
     
     private func setupLabels(_ profile: Profile) {
@@ -149,9 +173,12 @@ final class ProfileViewController: UIViewController {
     }
     
     private func prepareImage(url: URL) {
-        profileImageView.kf.indicatorType = .activity
-        profileImageView.kf.setImage(with: url,
-                                   placeholder: UIImage(named: "tab_profile_active.png")
+        profileImageView.kf.setImage(
+            with: url,
+            completionHandler: { [weak self] _ in
+                guard let self = self else { return }
+                self.gradientAnimation.removeFromSuperLayer(views: [self.profileImageView, self.nameLabel, self.loginLabel, self.descriptionLabel])
+            }
         )
     }
 }
