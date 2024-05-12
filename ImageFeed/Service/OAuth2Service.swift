@@ -8,10 +8,16 @@
 import Foundation
 enum OAuthErrors: Error {
     case requestUrlError
+    case invalidRequest
+    case codeDupe
 }
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     private init(){}
     
@@ -27,16 +33,33 @@ final class OAuth2Service {
         ]
         
         guard let urlRequest = urlComponents?.url
-        else {assertionFailure("Url Error")
+        else {
+            print("[makeRequest]: url Error")
             return nil }
-        print(urlRequest.absoluteString)
         var request = URLRequest(url: urlRequest)
         request.httpMethod = "POST"
         return request
     }
     
     func fetchOAuthToken(code: String, handler: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeRequest(code: code) else { return }
+        
+        assert(Thread.isMainThread)
+        
+        guard lastCode != code else {
+            print("[fetchOAuthToken]: code dupe Error")
+            handler(.failure(OAuthErrors.codeDupe))
+            return
+        }
+        
+        task?.cancel()
+        
+        lastCode = code
+        
+        guard let request = makeRequest(code: code) else {
+            print("[fetchOAuthToken]: makeRequest Error")
+            handler(.failure(OAuthErrors.invalidRequest))
+            return
+        }
         
         let task = URLSession.shared.data(for: request) { result in
             switch result{
@@ -47,8 +70,12 @@ final class OAuth2Service {
                     let response = try decoder.decode(OAuth2TokenResponseBody.self, from: data)
                     OAuth2TokenStorage.shared.token = response.accessToken
                     handler(.success(response.accessToken))
-                } catch { handler(.failure(error)) }
+                } catch {
+                    print("[fetchOAuthToken task]: Decode Error - Error: \(error)")
+                    handler(.failure(error))
+                }
             case .failure(let er):
+                print("[fetchOAuthToken task]: URLSession Error - Error: \(er)")
                 handler(.failure(er))
             }
             
