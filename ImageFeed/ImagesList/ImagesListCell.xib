@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="138" id="Y3d-Pj-qjj" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="138"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y3d-Pj-qjj" id="UEp-fG-Bcp">
+                <rect key="frame" x="0.0" y="0.0" width="393" height="138"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Nv0-xb-RgV">
+                        <rect key="frame" x="16" y="4" width="361" height="130"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G1K-wy-2On">
+                        <rect key="frame" x="16" y="108" width="361" height="30"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.11977128793072227" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="69d-n6-nl4"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="0"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahs-2C-kQR">
+                        <rect key="frame" x="331" y="11" width="42" height="42"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="like_button_on"/>
+                        <connections>
+                            <action selector="likeButtonClicked:" destination="Y3d-Pj-qjj" eventType="touchUpInside" id="Hvn-x4-HQ2"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 января 2024" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhZ-vn-iUn" userLabel="DataLabel">
+                        <rect key="frame" x="24.000000000000007" y="110.33333333333333" width="88.666666666666686" height="15.666666666666671"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" name="YP White"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="G1K-wy-2On" secondAttribute="trailing" constant="16" id="FOy-un-8ka"/>
+                    <constraint firstAttribute="bottom" secondItem="G1K-wy-2On" secondAttribute="bottom" id="JDD-4K-hKW"/>
+                    <constraint firstItem="hhZ-vn-iUn" firstAttribute="bottom" secondItem="Nv0-xb-RgV" secondAttribute="bottom" constant="-8" id="LuW-j1-Yeg"/>
+                    <constraint firstItem="hhZ-vn-iUn" firstAttribute="leading" secondItem="Nv0-xb-RgV" secondAttribute="leading" constant="8" id="PMT-BL-Ebe"/>
+                    <constraint firstItem="Nv0-xb-RgV" firstAttribute="leading" secondItem="UEp-fG-Bcp" secondAttribute="leading" constant="16" id="SVA-9b-ycm"/>
+                    <constraint firstItem="G1K-wy-2On" firstAttribute="leading" secondItem="UEp-fG-Bcp" secondAttribute="leading" constant="16" id="T8t-zy-PTG"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="ahs-2C-kQR" secondAttribute="trailing" id="fX7-F0-keH"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hhZ-vn-iUn" secondAttribute="trailing" id="jUQ-Qu-4yh"/>
+                    <constraint firstItem="Nv0-xb-RgV" firstAttribute="top" secondItem="UEp-fG-Bcp" secondAttribute="top" constant="4" id="luY-9y-eJ3"/>
+                    <constraint firstAttribute="bottom" secondItem="Nv0-xb-RgV" secondAttribute="bottom" constant="4" id="pEd-hX-mhC"/>
+                    <constraint firstAttribute="trailing" secondItem="Nv0-xb-RgV" secondAttribute="trailing" constant="16" id="tyi-Hu-t0a"/>
+                    <constraint firstItem="ahs-2C-kQR" firstAttribute="top" secondItem="UEp-fG-Bcp" secondAttribute="topMargin" id="vjW-0L-FWt"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" name="YP Background"/>
+            <connections>
+                <outlet property="cardImage" destination="Nv0-xb-RgV" id="dOv-qu-P6t"/>
+                <outlet property="dateTitle" destination="hhZ-vn-iUn" id="iO7-wY-gKx"/>
+                <outlet property="likeButton" destination="ahs-2C-kQR" id="kZn-lW-yC9"/>
+            </connections>
+            <point key="canvasLocation" x="117" y="43"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="0" width="1600" height="1059"/>
+        <image name="like_button_on" width="42" height="42"/>
+        <namedColor name="YP Background">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
