@@ -17,6 +17,10 @@ final class TabBarController: UITabBarController {
         self.tabBar.standardAppearance = appearance
         
         let imagesListViewController = ImagesListViewController()
+        let imagesListService = ImagesListService.shared
+        let imagesListPresenter = ImagesListPresenter(imagesListService: imagesListService)
+        imagesListViewController.presenter = imagesListPresenter
+        imagesListPresenter.view = imagesListViewController
         imagesListViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "tab_editorial_active"),

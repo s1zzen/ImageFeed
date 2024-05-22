@@ -52,7 +52,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "logout_button") ?? UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
         button.tintColor = UIColor(red: 245/255, green: 107/255, blue: 108/255, alpha: 1)
-        
+        button.accessibilityIdentifier = "ProfileLogoutButton"
         button.addTarget(self, action: #selector(handleLogoutButtonTap), for: .touchUpInside)
         return button
     }()

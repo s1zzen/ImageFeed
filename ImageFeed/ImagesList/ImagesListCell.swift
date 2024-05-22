@@ -7,7 +7,7 @@ protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-final class ImagesListCell: UITableViewCell {
+public final class ImagesListCell: UITableViewCell {
     @IBOutlet weak var cardImage: UIImageView!
     @IBOutlet private weak var dateTitle: UILabel!
     @IBOutlet private weak var likeButton: UIButton!
@@ -21,7 +21,7 @@ final class ImagesListCell: UITableViewCell {
 }
 
 extension ImagesListCell {
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         cardImage.kf.cancelDownloadTask()
     }
@@ -41,3 +41,5 @@ extension ImagesListCell {
     }
 }
 
+// захаров дмитрий алексан автомоторный институт
+    // дебелов владимир валентинович
