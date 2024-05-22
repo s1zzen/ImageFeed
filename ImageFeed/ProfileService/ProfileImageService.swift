@@ -7,6 +7,11 @@
 
 import Foundation
 
+public protocol ProfileImageServiceProtocol {
+    var avatarURL: String? { get }
+    func fetchProfileImage(username: String, _ completion: @escaping (Result<String, Error>)-> Void)
+}
+
 enum ProfileImageServiceError: Error {
     case invalidRequest
     case decoderError
@@ -16,7 +21,7 @@ struct UserResult: Codable {
     let profile_image: [String: String]
 }
 
-final class ProfileImageService {
+final class ProfileImageService: ProfileImageServiceProtocol {
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     private let session = URLSession.shared
