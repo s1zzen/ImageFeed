@@ -14,7 +14,7 @@ enum ImageListServiceError: Error {
     case taskNil
 }
 
-struct Photo {
+public struct Photo {
     let id: String
     let size: CGSize
     let createdAt: Date?
@@ -42,7 +42,13 @@ struct PhotoResult: Decodable {
     let urls: UrlsResult
 }
 
-final class ImagesListService {
+protocol ImagesListServiceProtocol: AnyObject {
+    var photos: [Photo] { get }
+    func fetchPhotosNextPage()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImagesListService: ImagesListServiceProtocol {
     private let dateFormatter = ISO8601DateFormatter()
     
     static let shared = ImagesListService()

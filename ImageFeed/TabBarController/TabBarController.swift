@@ -17,12 +17,19 @@ final class TabBarController: UITabBarController {
         self.tabBar.standardAppearance = appearance
         
         let imagesListViewController = ImagesListViewController()
+        let imagesListService = ImagesListService.shared
+        let imagesListPresenter = ImagesListPresenter(imagesListService: imagesListService)
+        imagesListViewController.presenter = imagesListPresenter
+        imagesListPresenter.view = imagesListViewController
         imagesListViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "tab_editorial_active"),
             selectedImage: nil)
         
         let profileViewController = ProfileViewController()
+        let profilePresenter = ProfilePresenter()
+        profileViewController.presenter = profilePresenter
+        profilePresenter.view = profileViewController
         profileViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "tab_profile_active"),

@@ -1,14 +1,23 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    var profile: Profile? { get set }
+    func prepareImage(url: URL)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+        
+    var presenter: ProfilePresenterProtocol?
+    var profile: Profile?
     
     private let profileService = ProfileService.shared
     private let profileImage = ProfileImageService.shared
     private let profileLogoutService = ProfileLogoutService.shared
     private let gradientAnimation = GradientAnimation.shared
-
-    private var profileImageServiceObserver: NSObjectProtocol?
+    private let gradient = CAGradientLayer()
+    private var animationLayers: [CALayer] = []
     
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -43,7 +52,7 @@ final class ProfileViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "logout_button") ?? UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
         button.tintColor = UIColor(red: 245/255, green: 107/255, blue: 108/255, alpha: 1)
-        
+        button.accessibilityIdentifier = "ProfileLogoutButton"
         button.addTarget(self, action: #selector(handleLogoutButtonTap), for: .touchUpInside)
         return button
     }()
@@ -90,18 +99,11 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .ypBlack
         setupViews()
         setupConstraints()
-        
-        guard let profile = profileService.profile else {
-            print("[ProfileViewController viewDidLoad]: Failed to create profile")
+        presenter?.setAvatar()
+        profile = presenter?.getProfile()
+        guard let profile else {
             return
         }
-        
-        if let avatarURL = ProfileImageService.shared.avatarURL,
-           let url = URL(string: avatarURL) {
-            
-            prepareImage(url: url)
-        }
-        
         setupLabels(profile)
     }
     
@@ -122,13 +124,8 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func updateAvatar(notification: Notification) {
-        guard
-            isViewLoaded,
-            let userInfo = notification.userInfo,
-            let profileImageURL = userInfo["URL"] as? String,
-            let url = URL(string: profileImageURL) else { return }
-        
-        prepareImage(url: url)
+        guard isViewLoaded else { return }
+        presenter?.updateAvatar(notification: notification)
     }
     
     private func setupViews() {
@@ -172,7 +169,7 @@ final class ProfileViewController: UIViewController {
         descriptionLabel.text = profile.bio
     }
     
-    private func prepareImage(url: URL) {
+    func prepareImage(url: URL) {
         profileImageView.kf.setImage(
             with: url,
             completionHandler: { [weak self] _ in
